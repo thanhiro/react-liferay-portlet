@@ -1,0 +1,6 @@
+Bundle-Name: reactpoc
+Bundle-SymbolicName: com.example.liferay.reactpoc
+Bundle-Version: 1.0.0
+Web-ContextPath: /reactpoc
+Export-Package: com.example.liferay.reactpoc.provider
+-sources: true

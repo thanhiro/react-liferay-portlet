@@ -1,0 +1,91 @@
+buildscript {
+    ext {
+        kotlinVersion = '1.1.51'
+    }
+
+    dependencies {
+        classpath group: "com.liferay", name: "com.liferay.gradle.plugins", version: "3.3.9"
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
+        classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
+    }
+
+    repositories {
+        maven {
+            url "https://cdn.lfrs.sl/repository.liferay.com/nexus/content/groups/public"
+        }
+    }
+}
+
+plugins {
+    id "org.zeroturnaround.gradle.jrebel" version "1.1.6"
+}
+
+apply plugin: 'kotlin'
+// apply plugin: "com.liferay.plugin"
+
+group = 'com.example.liferay'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+project.ext.jacksonVersion = '2.9.1'
+
+dependencies {
+    compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "2.0.0"
+    compileOnly group: "com.liferay.portal", name: "com.liferay.util.taglib", version: "2.0.0"
+    compileOnly group: "com.liferay", name: "com.liferay.portal.configuration.metatype", version: "2.0.0"
+    compileOnly group: "javax.portlet", name: "portlet-api", version: "2.0"
+    compileOnly group: "javax.servlet", name: "javax.servlet-api", version: "3.0.1"
+    compileOnly group: "jstl", name: "jstl", version: "1.2"
+    compileOnly group: "org.osgi", name: "osgi.cmpn", version: "6.0.0"
+    compileOnly group: "biz.aQute.bnd", name: "biz.aQute.bndlib", version: "3.1.0"
+    compileOnly group: 'javax.ws.rs', name: 'javax.ws.rs-api', version: '2.0.1'
+    compileOnly group: "org.apache.cxf", name: "cxf-rt-frontend-jaxrs", version: "3.1.9"
+    compileOnly group: "org.apache.cxf", name: "cxf-rt-rs-extension-providers", version: "3.1.9"
+    compileOnly group: "org.apache.cxf", name: "cxf-rt-rs-json-basic", version: "3.1.9"
+    compileOnly "org.jetbrains.kotlin:kotlin-osgi-bundle:$kotlinVersion"
+    compileOnly group: 'commons-pool', name: 'commons-pool', version: '1.5.4'
+    compileOnly group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5'
+    compileOnly group: 'org.apache.httpcomponents', name: 'httpcore', version: '4.4.1'
+    compileOnly group: 'org.apache.thrift', name: 'libthrift', version: '0.6.1'
+    compileInclude group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: project.jacksonVersion
+    compileInclude group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: project.jacksonVersion
+}
+
+repositories {
+    mavenLocal()
+
+    maven {
+        url "https://cdn.lfrs.sl/repository.liferay.com/nexus/content/groups/public"
+    }
+}
+
+node {
+    download = false
+}
+
+import com.liferay.gradle.plugins.node.tasks.ExecuteNodeTask
+
+task buildWebpack(type: ExecuteNodeTask)
+// task cleanJSDist
+
+buildWebpack {
+    dependsOn npmInstall
+    args = "./node_modules/webpack/bin/webpack.js"
+}
+
+jar.dependsOn(generateRebel)
+
+//cleanJSDist {
+//    delete "./src/main/resources/META-INF/resources/dist"
+//}
+
+classes {
+    dependsOn buildWebpack
+}
