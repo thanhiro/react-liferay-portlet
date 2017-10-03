@@ -1,4 +1,4 @@
-# Liferay MVC Portlet with React JS and Webpack
+# Liferay MVC Portlet with Kotlin, SSR React and Webpack
 
 ## Development
 
