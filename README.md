@@ -17,7 +17,10 @@ blade sh install http://central.maven.org/maven2/org/jetbrains/kotlin/kotlin-osg
 
 ## Configuration
 
-If HTML5 history API is enabled in portlet config, urlrewrite.xml needs to be modified.
+Currently this portlet assumes to sit in the page responding to route `/ui`.
+
+If HTML5 history API pushState is enabled in portlet config, Liferay's `urlrewrite.xml` needs to be modified.
+Note that server rendering assumes that history pushState is used.
  
 ```xml
 <urlrewrite>
