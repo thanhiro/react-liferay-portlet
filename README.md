@@ -27,4 +27,4 @@ Raw command:
 
 Blade: 
         
-    blade deploy`
+    blade deploy
