@@ -16,10 +16,8 @@
     HttpServletRequest r = PortalUtil.getHttpServletRequest(renderRequest);
     String path = PortalUtil.getOriginalServletRequest(r).getRequestURI();
 
-    System.out.println(path);
-
     if ("true".equals(universalRender)) {
-        appAsString = ssrRenderer.render();
+        appAsString = ssrRenderer.render(path);
     }
 %>
 <div id="react-app"><%= appAsString %></div>

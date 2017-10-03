@@ -15,9 +15,9 @@ class SsrRenderer {
         nashorn
     }
 
-    fun render(): String {
+    fun render(path: String): String {
         try {
-            val html = (engineHolder.get() as Invocable).invokeFunction("renderApp")
+            val html = (engineHolder.get() as Invocable).invokeFunction("renderApp", path)
             return html.toString()
         } catch (e: Exception) {
             throw IllegalStateException("failed to render in JavaScript", e)
